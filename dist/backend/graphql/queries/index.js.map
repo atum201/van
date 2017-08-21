@@ -1,0 +1,1 @@
+{"version":3,"sources":["backend/graphql/queries/index.js"],"names":["egov","vote","query","Object","assign"],"mappings":";;;;;;AAAA;;IAAYA,I;;AACZ;;IAAYC,I;;;;AAEZ,IAAMC,QAAQC,OAAOC,MAAP,CAAcH,IAAd,EAAmBD,IAAnB,CAAd;kBACeE,K","file":"index.js","sourceRoot":"../../../../../../.."}

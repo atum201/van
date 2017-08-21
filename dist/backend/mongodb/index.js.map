@@ -1,0 +1,1 @@
+{"version":3,"sources":["backend/mongodb/index.js"],"names":["egov","vote","Object","assign"],"mappings":";;;;;;AAAA;;IAAYA,I;;AACZ;;IAAYC,I;;;;kBAEGC,OAAOC,MAAP,CAAcH,IAAd,EAAmBC,IAAnB,C","file":"index.js","sourceRoot":"../../../../.."}

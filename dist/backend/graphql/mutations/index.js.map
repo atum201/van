@@ -1,0 +1,1 @@
+{"version":3,"sources":["backend/graphql/mutations/index.js"],"names":["egov","vote","mutation","Object","assign"],"mappings":";;;;;;AAAA;;IAAYA,I;;AACZ;;IAAYC,I;;;;AAEZ,IAAMC,WAAWC,OAAOC,MAAP,CAAcH,IAAd,EAAmBD,IAAnB,CAAjB;kBACeE,Q","file":"index.js","sourceRoot":"../../../../../../.."}

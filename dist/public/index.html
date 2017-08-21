@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Chat Demo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/live.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/chosen.min.css">
+    </head>
+    <body>
+        <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="js/chosen.jquery.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.16.1/lodash.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/chat.js"></script>
+    <style>
+            .hidden{
+                display: none;
+            }
+        </style>
+        <table>
+            <tr>
+                <td>
+                    
+                </td>
+                <td>
+                    <button id="synchronous" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on left">synchronous</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id ="txtLogin" name="">
+                </td>
+                <td>
+                    <button id="login" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on left">login</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id ="txtLogins" name="">
+                </td>
+                <td>
+                    <button id="logins" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on left">logins</button>
+                </td>
+            </tr>
+        </table>
+        <div id="result"></div>
+        <script type="text/javascript">
+            var socket = io();
+            var user = {userId:"toanvdc"};
+            var chatapp = new ChatApp(user,socket);
+            $("body").append(chatapp.dom);
+            $("#synchronous").click(function(e){
+                alert('qeweqwe');
+                e.stopPropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/api/synchronous', true);
+                xhr.onload = function() {
+                    if (this.status == 200) {
+                        console.log(this.response);
+                    };
+                };
+                xhr.send();
+            });
+            $("#login").click(function(){
+                chatapp._queryGraphql("/graphql","{login(u:\""+$("#txtLogin").val()+"\")}",undefined,function(data){
+                    callback(data.data);
+                })
+            })
+            $("#logins").click(function(){
+
+            })
+        </script>
+    </body>
+</html>
