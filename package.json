@@ -19,7 +19,7 @@
     "socket.io"
   ],
   "dependencies": {
-    "@google-cloud/storage": "^1.1.0",
+    "@google-cloud/storage": "^1.2.1",
     "bluebird": "^3.1.4",
     "body-parser": "^1.14.2",
     "cors": "^2.7.1",
