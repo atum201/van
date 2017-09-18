@@ -3,25 +3,39 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseVoteType = exports.CommonVoteType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MemberType = exports.InputVoteType = exports.DateType = undefined;
+exports.ResponseVoteType = exports.CommonVoteType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.SpeechType = exports.InboxType = exports.MemberType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
-// Scalar Type: new graphql type with validation
-var DateType = exports.DateType = new _graphql.GraphQLScalarType({
-  name: 'Date',
-  description: 'Date custom scalar type',
-  parseValue: function parseValue(value) {
-    return new Date(value); // value from the client
-  },
+var MillisecondsType = new _graphql.GraphQLScalarType({
+  name: 'MillisecondsType',
   serialize: function serialize(value) {
-    return value.getTime(); // value sent to the client
+    return value;
+  },
+  parseValue: function parseValue(value) {
+    return value;
   },
   parseLiteral: function parseLiteral(ast) {
-    if (ast.kind === Kind.INT) {
-      return parseInt(ast.value, 10); // ast value is always in string format
+    if (ast.kind !== Kind.INT) {
+      throw new GraphQLError("Query error: Can only parse object but got a: " + ast.kind, [ast]);
     }
-    return null;
+    return ast.value;
+  }
+});
+
+var ScaleType = new _graphql.GraphQLScalarType({
+  name: 'ScaleType',
+  serialize: function serialize(value) {
+    return value;
+  },
+  parseValue: function parseValue(value) {
+    return value;
+  },
+  parseLiteral: function parseLiteral(ast) {
+    if (ast.kind !== Kind.OBJECT) {
+      throw new GraphQLError("Query error: Can only parse object but got a: " + ast.kind, [ast]);
+    }
+    return ast.value;
   }
 });
 
@@ -31,6 +45,26 @@ var InputVoteType = exports.InputVoteType = {
     name: "InputVote",
     fields: {
       payload: { type: _graphql.GraphQLString },
+      action: { type: _graphql.GraphQLString }
+    }
+  }) };
+
+var FindType = exports.FindType = {
+  type: new _graphql.GraphQLInputObjectType({
+    name: "Find",
+    fields: {
+      find: { type: ScaleType },
+      sort: { type: ScaleType },
+      page: { type: _graphql.GraphQLInt },
+      size: { type: _graphql.GraphQLInt }
+    }
+  }) };
+
+var SubmitType = exports.SubmitType = {
+  type: new _graphql.GraphQLInputObjectType({
+    name: "Submit",
+    fields: {
+      payload: { type: ScaleType },
       action: { type: _graphql.GraphQLString }
     }
   }) };
@@ -57,7 +91,43 @@ var MemberType = exports.MemberType = new _graphql.GraphQLObjectType({
     adress: { type: _graphql.GraphQLString },
     introduce: { type: _graphql.GraphQLString },
     banner: { type: _graphql.GraphQLString },
-    phone: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+    phone: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    createdAt: { type: MillisecondsType }
+  }
+});
+
+var InboxLogType = new _graphql.GraphQLObjectType({
+  name: 'InboxLog',
+  fields: {
+    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    action: { type: _graphql.GraphQLString },
+    time: { type: MillisecondsType }
+  }
+});
+
+var InboxType = exports.InboxType = new _graphql.GraphQLObjectType({
+  name: 'Inbox',
+  fields: {
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    creater: { type: _graphql.GraphQLString },
+    name: { type: _graphql.GraphQLString },
+    state: { type: _graphql.GraphQLInt },
+    log: { type: new _graphql.GraphQLList(InboxLogType) },
+    private: { type: _graphql.GraphQLBoolean },
+    time: { type: MillisecondsType }
+  }
+});
+
+var SpeechType = exports.SpeechType = new _graphql.GraphQLObjectType({
+  name: 'Speech',
+  fields: {
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    from: { type: _graphql.GraphQLString },
+    inbox: { type: _graphql.GraphQLString },
+    content: { type: _graphql.GraphQLString },
+    state: { type: _graphql.GraphQLInt },
+    time: { type: MillisecondsType }
   }
 });
 
@@ -68,7 +138,7 @@ var ClanRoleType = new _graphql.GraphQLObjectType({
     rule: { type: _graphql.GraphQLInt },
     title: { type: _graphql.GraphQLString }
   }
-});
+}, { _id: false });
 
 var ClanType = exports.ClanType = new _graphql.GraphQLObjectType({
   name: 'Clan',
@@ -82,14 +152,16 @@ var ClanType = exports.ClanType = new _graphql.GraphQLObjectType({
     level: { type: _graphql.GraphQLInt },
     member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
     inviteMember: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-    applyMember: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+    applyMember: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    createdAt: { type: MillisecondsType }
   }
 });
 
 var RankType = exports.RankType = new _graphql.GraphQLObjectType({
   name: 'Rank',
   fields: {
-    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) }
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    createdAt: { type: MillisecondsType }
   }
 });
 
@@ -101,7 +173,15 @@ var VoteType = exports.VoteType = new _graphql.GraphQLObjectType({
     members: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
     index: { type: _graphql.GraphQLInt },
     name: { type: _graphql.GraphQLString },
-    time: { type: _graphql.GraphQLInt }
+    time: { type: MillisecondsType }
+  }
+});
+
+var TurnType = new _graphql.GraphQLObjectType({
+  name: 'Turn',
+  fields: {
+    game: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) },
+    scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) }
   }
 });
 
@@ -109,7 +189,15 @@ var MatchType = exports.MatchType = new _graphql.GraphQLObjectType({
   name: 'Match',
   fields: {
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
-    match: { type: _graphql.GraphQLString }
+    type: { type: _graphql.GraphQLString },
+    tournament: { type: _graphql.GraphQLString },
+    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    index: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    name: { type: _graphql.GraphQLString },
+    time: { type: MillisecondsType },
+    turn: { type: new _graphql.GraphQLList(TurnType) },
+    scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    createdAt: { type: MillisecondsType }
   }
 });
 
@@ -118,7 +206,8 @@ var TeamType = exports.TeamType = new _graphql.GraphQLObjectType({
   fields: {
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
     team: { type: _graphql.GraphQLString },
-    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    createdAt: { type: MillisecondsType }
   }
 });
 

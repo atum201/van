@@ -28,12 +28,10 @@ var MemberSchema = new _mongoose2.default.Schema({
   account: { type: String },
   password: { type: String },
   name: { type: String },
-  clan: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Clan" }],
   nickName: { type: String },
   point: { type: Number },
   winGame: { type: Number },
   totalGame: { type: Number },
-  title: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Title" }],
   avatar: { type: String },
   netClub: [{ type: String }],
   slogan: { type: String },
@@ -43,7 +41,10 @@ var MemberSchema = new _mongoose2.default.Schema({
   introduce: { type: String },
   banner: { type: String },
   phone: [{ type: String }],
-  createdAt: { type: Number, default: new Date().getTime() }
+  createdAt: { type: Number, default: new Date().getTime() },
+  clan: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Clan" }],
+  title: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Title" }],
+  inbox: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Inbox" }]
 });
 // Rank Model Data 
 var RankSchema = new _mongoose2.default.Schema({
@@ -57,13 +58,13 @@ var VoteSchema = new _mongoose2.default.Schema({
 var TurnSchema = new _mongoose2.default.Schema({
   game: [[{ type: Number }]],
   scored: [{ type: Number }]
-});
+}, { _id: false });
 var MatchSchema = new _mongoose2.default.Schema({
   type: { type: String },
   tournament: { type: _mongoose2.default.Schema.ObjectId, ref: "Tournament" },
   member: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
   index: [{ type: Number }],
-  name: [{ type: String }],
+  name: { type: String },
   time: { type: Number },
   turn: [TurnSchema],
   scored: [{ type: Number }],
@@ -98,6 +99,30 @@ var TitleSchema = new _mongoose2.default.Schema({
   createdAt: { type: Number, default: new Date().getTime() }
 });
 
+var InboxLogSchema = new _mongoose2.default.Schema({
+  member: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
+  action: { type: String },
+  time: { type: Number, default: new Date().getTime() }
+}, { _id: false });
+
+var InboxSchema = new _mongoose2.default.Schema({
+  member: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
+  creater: { type: _mongoose2.default.Schema.ObjectId, ref: "Member" },
+  name: { type: String, default: '', trim: true },
+  state: { type: Number, default: 0 },
+  log: [InboxLogSchema],
+  private: { type: Boolean, default: true },
+  time: { type: Number, default: new Date().getTime() }
+});
+
+var SpeechSchema = new _mongoose2.default.Schema({
+  from: { type: _mongoose2.default.Schema.ObjectId, ref: "Member" },
+  inbox: { type: _mongoose2.default.Schema.ObjectId, ref: "Inbox" },
+  content: { type: String, default: '', trim: true },
+  state: { type: Number, default: 0 },
+  time: { type: Number, default: new Date().getTime() }
+});
+
 exports.TournamentSchema = TournamentSchema;
 
 exports.TitleSchema = TitleSchema;
@@ -113,4 +138,8 @@ exports.MemberSchema = MemberSchema;
 exports.RankSchema = RankSchema;
 
 exports.VoteSchema = VoteSchema;
+
+exports.InboxSchema = InboxSchema;
+
+exports.SpeechSchema = SpeechSchema;
 //# sourceMappingURL=vote.js.map

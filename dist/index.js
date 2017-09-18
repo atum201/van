@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _bluebird = require('bluebird');
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
@@ -57,6 +59,9 @@ _mongodb.PhanCap.findOne({}).sort({ time: -1 }).execAsync().then(function (phanc
   randomVersion = phancap._id.toString();
   console.log(randomVersion);
 });
+
+var todo = { a: 1, b: 3, t: true };
+console.log(_extends({}, todo, { t: !todo.t }));
 
 io.on('connection', function (socket) {
   socket.on(_constant.SOCKET_SEND_CONNECT, function (data) {

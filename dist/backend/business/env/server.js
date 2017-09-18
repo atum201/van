@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var dbPort = process.argv[4] || 27017;
 var connection = {
+	// motcua:"mongodb://motcua:mOtCuAcmOn@localhost:"+dbPort+"/motcua",
 	motcua: "mongodb://qlvb:QLVB20119@localhost:" + dbPort + "/qlvb",
 	portal: "mongodb://admin:pOrtal123@localhost:" + dbPort + "/portal",
 	dvc: "mongodb://admin:Dvc#152*12@localhost:" + dbPort + "/dvc",
