@@ -49,7 +49,9 @@ var makeQuery = function makeQuery(graphQLType, model, multi, id) {
     return {
       type: graphQLType,
       args: {
-        q: _graphql.GraphQLString
+        q: {
+          type: _graphql.GraphQLString
+        }
       },
       resolve: function resolve(_, _ref2) {
         var q = _ref2.q;

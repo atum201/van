@@ -169,10 +169,105 @@ app.post('/api/upload', uploadFile, function (req, res) {
   res.end();
 });
 
+app.get('/api/upload', uploadFile, function (req, res) {
+  var _loop2 = function _loop2(i) {
+    var file = new _mongodb.File({
+      fileName: req.files[i].originalname,
+      fileType: req.files[i].mimetype,
+      path: req.files[i].path,
+      creater: ObjectID(req.body.from)
+    });
+    file.saveAsync().then(function (file) {
+      var message = new Message({
+        from: req.body ? ObjectID(req.body.from) : undefined,
+        toGroup: req.body.toGroup ? ObjectID(req.body.toGroup) : undefined,
+        toUser: req.body.toUser ? ObjectID(req.body.toUser) : undefined,
+        content: "<a href=\"/download/" + file.id + "\" class=\"fileattach\"><i class=\"fa " + getFileTypeFA(file.fileType) + " fa-3x\"></i>" + file.fileName + "</a>",
+        state: 0,
+        time: new Date().getTime()
+      });
+      message.saveAsync().then(function (message) {
+        var type = "user";
+        if (message.toUser) {
+          socker.forEach(function (sk) {
+            if (sk.userId == message.toUser || sk.userId == message.from) {
+              sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
+            }
+          });
+          User.findOneAsync({ _id: ObjectID(message.toUser) }).then(function (user) {
+            user.recent = updateRecent(user.recent, message.from.toString());
+            user.saveAsync();
+          });
+        }
+        if (message.toGroup) {
+          // gui tin nhan den cac thanh vien trong group dang online.
+          type = "group";
+          Group.findOneAsync({ _id: ObjectID(message.toGroup) }).then(function (group) {
+            socker.forEach(function (sk) {
+              if (group.member.indexOf(sk.userId) != -1) {
+                sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
+              }
+            });
+            var idsIn = _.flatMap(group.member, function (m) {
+              return ObjectID(m);
+            });
+            User.findAsync({ _id: { $in: idsIn } }).then(function (users) {
+              users.forEach(function (user) {
+                user.recent = updateRecent(user.recent, message.toGroup.toString(), "group");
+                user.saveAsync();
+              });
+            });
+          });
+        }
+        User.findOneAsync({ _id: ObjectID(message.from) }).then(function (user) {
+          if (!user.recent) {
+            user.recent = [];
+          }
+          var rid = message.toGroup || message.toUser;
+          var ii = _.findIndex(user.recent, { id: rid });
+          if (ii == -1) user.recent.push({ id: rid, last: new Date().getTime(), type: type });
+          user.saveAsync();
+        });
+      });
+    });
+  };
+
+  for (var i = 0; i < req.files.length; i++) {
+    _loop2(i);
+  };
+  res.end();
+});
+
 app.get('/download/:idfile', function (req, res) {
   _mongodb.File.get(req.params.idfile).then(function (file) {
     res.download(file.path, file.fileName);
   }).error(function (e) {});
+});
+
+app.post('/api/capnhatphancap', function (req, res) {
+  if (req.body) {
+    (0, _common.capnhatphancap)(req.body).then(function (phancap) {
+      var phanCap = new PhanCap({
+        phanCap: phancap
+      });
+      phanCap.saveAsync().then(function (pc) {
+        console.log(pc._id.toString());
+        res.send("Nguoi dung da duoc cap nhat tai ban ghi " + pc._id.toString());
+      });
+    });
+  }
+});
+
+app.post('/api/capnhatmysql', function (req, res) {
+  (0, _mysql2.default)().then(function (result) {
+    res.send(result);
+  });
+});
+
+app.get('/api/capnhatmysql', function (req, res) {
+  (0, _mysql2.default)().then(function (result) {
+    res.send(result);
+  });
 });
 
 app.post('/api/dsnguoidung', function (req, res) {
@@ -203,26 +298,6 @@ app.post('/api/capnhatnguoidung', function (req, res) {
       }
     });
   }
-});
-
-app.post('/api/capnhatphancap', function (req, res) {
-  if (req.body) {
-    (0, _common.capnhatphancap)(req.body).then(function (phancap) {
-      var phanCap = new PhanCap({
-        phanCap: phancap
-      });
-      phanCap.saveAsync().then(function (pc) {
-        console.log(pc._id.toString());
-        res.send("Nguoi dung da duoc cap nhat tai ban ghi " + pc._id.toString());
-      });
-    });
-  }
-});
-
-app.post('/api/capnhatmysql', function (req, res) {
-  (0, _mysql2.default)().then(function (result) {
-    res.send(result);
-  });
 });
 
 exports.default = app;
