@@ -43,7 +43,6 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
       var payload = data.payload,
           action = data.action;
 
-      console.log(payload, action);
       if (action === _constant.ADD) {
         console.log(_constant.ADD);
         var doc = new col(payload);
@@ -55,8 +54,7 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
           };
         });
       }
-      if (action === _constant.EDIT) {
-        console.log(_constant.EDIT);
+      if (action === _constant.UPDATE) {
         return col.findOneAsync({ _id: (0, _mongodb.ObjectID)(payload.id) }).then(function (doc) {
           if (doc) {
             _lodash2.default.assign(doc, payload); // update Document
@@ -67,7 +65,6 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
         });
       }
       if (action === _constant.DEL) {
-        console.log(_constant.DEL);
         return col.findOneAsync({ _id: (0, _mongodb.ObjectID)(payload.id) }).then(function (doc) {
           if (doc) {
             doc.removeAsync();

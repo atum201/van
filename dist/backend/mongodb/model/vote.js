@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
+exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
 
 var _mongoose = require('mongoose');
 
@@ -29,4 +29,5 @@ var Clan = exports.Clan = Model("Clan");
 var Match = exports.Match = Model("Match");
 var Rank = exports.Rank = Model("Rank");
 var Vote = exports.Vote = Model("Vote");
+var Inbox = exports.Inbox = Model("Inbox");
 //# sourceMappingURL=vote.js.map

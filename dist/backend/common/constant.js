@@ -83,6 +83,7 @@ var CREATE_PLAYER = exports.CREATE_PLAYER = "create player",
 // Mutation
 var ADD = exports.ADD = "ADD",
     EDIT = exports.EDIT = "EDIT",
+    UPDATE = exports.UPDATE = "UPDATE",
     DEL = exports.DEL = "DEL",
     STATE_SUCCESS = exports.STATE_SUCCESS = '19',
     STATE_ERROR = exports.STATE_ERROR = '20',
