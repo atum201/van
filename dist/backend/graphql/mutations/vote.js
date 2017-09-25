@@ -44,13 +44,12 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
           action = data.action;
 
       if (action === _constant.ADD) {
-        console.log(_constant.ADD);
         var doc = new col(payload);
         return doc.saveAsync().then(function (d) {
           return (0, _util.standardDoc)(d);
         }).error(function (e) {
           return {
-            id: "-1"
+            id: _constant.STATE_ERROR
           };
         });
       }
@@ -60,27 +59,31 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
             _lodash2.default.assign(doc, payload); // update Document
             return doc.saveAsync();
           } else {
-            return { id: "-1" };
-          }
-        });
-      }
-      if (action === _constant.DEL) {
-        return col.findOneAsync({ _id: (0, _mongodb.ObjectID)(payload.id) }).then(function (doc) {
-          if (doc) {
-            doc.removeAsync();
-            return {
-              id: "0"
-            };
-          } else {
-            return {
-              id: "-1"
-            };
+            return { id: _constant.STATE_NOT_FOUND };
           }
         }).error(function (e) {
           return {
-            id: "-1"
+            id: _constant.STATE_ERROR
           };
         });
+      }
+      if (action === _constant.REMOVE) {
+        if (Array.isArray(payload.id)) {
+          var idsIn = _lodash2.default.flatMap(payload.id, function (m) {
+            return (0, _mongodb.ObjectID)(m);
+          });
+          return col.removeAsync({ _id: { $in: idsIn } }).then(function () {
+            return { id: _constant.STATE_SUCCESS };
+          }).error(function (e) {
+            return { id: _constant.STATE_ERROR };
+          });
+        } else {
+          return col.removeAsync({ _id: (0, _mongodb.ObjectID)(payload.id) }).then(function () {
+            return { id: _constant.STATE_SUCCESS };
+          }).error(function (e) {
+            return { id: _constant.STATE_ERROR };
+          });
+        }
       }
     }
   };

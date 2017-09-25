@@ -81,11 +81,12 @@ var CREATE_PLAYER = exports.CREATE_PLAYER = "create player",
     REMOVE_VOTE = exports.REMOVE_VOTE = "remove vote";
 
 // Mutation
-var ADD = exports.ADD = "ADD",
-    EDIT = exports.EDIT = "EDIT",
-    UPDATE = exports.UPDATE = "UPDATE",
-    DEL = exports.DEL = "DEL",
-    STATE_SUCCESS = exports.STATE_SUCCESS = '19',
-    STATE_ERROR = exports.STATE_ERROR = '20',
-    STATE_NOT_FOUND = exports.STATE_NOT_FOUND = '21';
+var ADD = exports.ADD = "add",
+    EDIT = exports.EDIT = "edit",
+    UPDATE = exports.UPDATE = "update",
+    DEL = exports.DEL = "del",
+    REMOVE = exports.REMOVE = "remove",
+    STATE_SUCCESS = exports.STATE_SUCCESS = 19,
+    STATE_ERROR = exports.STATE_ERROR = 20,
+    STATE_NOT_FOUND = exports.STATE_NOT_FOUND = 21;
 //# sourceMappingURL=constant.js.map
