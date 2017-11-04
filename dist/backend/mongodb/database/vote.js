@@ -10,6 +10,7 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _mongoose2.default.createConnection('mongodb://dragon:bElOngtOmE@localhost:6996/cloud', { useMongoClient: true, keepAlive: 1 });
+var dbPort = process.argv[4] || 27017;
+exports.default = _mongoose2.default.createConnection('mongodb://dragon:bElOngtOmE@localhost:' + dbPort + '/cloud', { useMongoClient: true, keepAlive: 1 });
 module.exports = exports['default'];
 //# sourceMappingURL=vote.js.map
