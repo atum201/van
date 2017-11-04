@@ -45,9 +45,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var server = _http2.default.Server(_express2.default);
 var io = new _socket2.default(server);
 // promisify mongoose
+
 _bluebird2.default.promisifyAll(_mongoose2.default);
 // connect to mongo db
-_mongoose2.default.connect(_env2.default.db, { server: { socketOptions: { keepAlive: 1 } } });
+_mongoose2.default.connect(_env2.default.db, { useMongoClient: true, keepAlive: 1 });
 _mongoose2.default.connection.on('error', function () {
   throw new Error('unable to connect to database: ' + _env2.default.db);
 });

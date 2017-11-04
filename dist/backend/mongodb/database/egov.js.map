@@ -1,0 +1,1 @@
+{"version":3,"sources":["backend/mongodb/database/egov.js"],"names":["createConnection","server","socketOptions","keepAlive","useMongoClient"],"mappings":";;;;;;AAAA;;;;;;kBAEe,mBAASA,gBAAT,CAA0B,8CAA1B,EAA0E,EAAEC,QAAQ,EAAEC,eAAe,EAAEC,WAAW,CAAb,EAAjB,EAAV,EAA8CC,gBAAgB,IAA9D,EAA1E,C;AACf","file":"egov.js","sourceRoot":"../../../../../../.."}

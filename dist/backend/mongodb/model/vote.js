@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
 
-var _mongoose = require('mongoose');
+var _vote = require('../database/vote');
 
-var _mongoose2 = _interopRequireDefault(_mongoose);
+var _vote2 = _interopRequireDefault(_vote);
 
 var _schema = require('../schema');
 
@@ -17,8 +17,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import mongoose from 'mongoose'
 var Model = function Model(name, schema) {
-  return _mongoose2.default.model(name, Schema[schema || name + "Schema"]);
+  return _vote2.default.model(name, Schema[schema || name + "Schema"]);
 };
 
 var Member = exports.Member = Model("Member");
@@ -30,4 +31,5 @@ var Match = exports.Match = Model("Match");
 var Rank = exports.Rank = Model("Rank");
 var Vote = exports.Vote = Model("Vote");
 var Inbox = exports.Inbox = Model("Inbox");
+// export const Msg = Model("Message")
 //# sourceMappingURL=vote.js.map

@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Model = function Model(name, schema) {
   return _mongoose2.default.model(name, Schema[schema || name + "Schema"]);
 };
-
+// import MongoDB from '../database/egov'
 var User = exports.User = Model("User");
 var Message = exports.Message = Model("Message");
 var Group = exports.Group = Model("Group");
