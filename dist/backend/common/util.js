@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.emitter = exports.standardDoc = exports.getFileTypeFA = exports.updateRecent = exports.monthindex = exports.monthdiff = exports.daydiff = exports.minutediff = exports.randomchar = exports.randomString = undefined;
+exports.emitter = exports.standardDoc = exports.getFileTypeFA = exports.updateRecent = exports.monthindex = exports.monthdiff = exports.daydiff = exports.minutediff = exports.randomchar = exports.randomString = exports.getEmprireName = undefined;
 
 var _lodash = require('lodash');
 
@@ -12,6 +12,10 @@ var _lodash2 = _interopRequireDefault(_lodash);
 var _constant = require('./constant');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getEmprireName = exports.getEmprireName = function getEmprireName(i) {
+  return _constant.voteConst.emprires[i];
+};
 
 var randomString = exports.randomString = function randomString(L) {
   var s = '';

@@ -28,7 +28,6 @@ var handleMember = function handleMember(members, users) {
   for (var i = 0; i < members.length; i++) {
     _loop(i);
   }
-  console.log(members);
   return _lodash2.default.compact(members);
 };
 

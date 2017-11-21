@@ -44,8 +44,9 @@ var fileTypeFA = exports.fileTypeFA = [["fa-file-o", "fa-file-word-o", "fa-file-
 ['application/zip', 'application/x-rar-compressed', 'application/x-msdownload', 'application/x-msdownload', 'application/vnd.ms-cab-compressed'] // zip
 ];
 
-var voteProp = exports.voteProp = {
-                emprires: ["sang", "asy", "egypt", "hittle", "phonix", "parmy", "summer", "baby", "yamoto", "roman", "persi", "macxe", "mioan", "catha", "choson", "greek"],
+var voteConst = exports.voteConst = {
+                emprires: ["sang", "assyrian", "egyptian", "hittle", "phoenician", "palmyran", "sumerian", "babylonian", "yamoto", "roman", "persian", "macedonian", "minoan", "carthagian", "choson", "greek"],
+                empriresShort: ["sang", "asy", "egypt", "hittle", "phonix", "parmy", "summer", "baby", "yamoto", "roman", "persi", "macxe", "mioan", "catha", "choson", "greek"],
                 noidung: ["ramdom", "asy", "sangtudo", "rsang", "honmasang", "yaasy", "ya4"],
                 thethuc: ["solo", "22", "33", "44", "doanthe"],
                 tinhchat: ["giaoluunoibo", "giaoluu", "giaoluuquocte", "giaidaunoibo", "giaidau", "giaidauquocte"],
