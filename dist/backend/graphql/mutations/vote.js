@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = undefined;
+exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = undefined;
 
 var _lodash = require('lodash');
 
@@ -98,4 +98,5 @@ var rank = exports.rank = makeSubmit(GraphQLType.RankType, Model.Rank);
 var vote = exports.vote = makeSubmit(GraphQLType.VoteType, Model.Vote);
 var inbox = exports.inbox = makeSubmit(GraphQLType.InboxType, Model.Inbox);
 var msg = exports.msg = makeSubmit(GraphQLType.MsgType, Model.Msg);
+var image = exports.image = makeSubmit(GraphQLType.ImageType, Model.Image);
 //# sourceMappingURL=vote.js.map

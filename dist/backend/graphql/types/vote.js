@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseVoteType = exports.CommonVoteType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -274,7 +274,24 @@ var TitleType = exports.TitleType = new _graphql.GraphQLObjectType({
     pride: { type: _graphql.GraphQLInt },
     tournament: { type: _graphql.GraphQLString },
     team: { type: _graphql.GraphQLString },
-    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+    member: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    createdAt: { type: MillisecondsType }
+  }
+});
+
+var ImageType = exports.ImageType = new _graphql.GraphQLObjectType({
+  name: 'Image',
+  fields: {
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    name: { type: _graphql.GraphQLString },
+    caption: { type: _graphql.GraphQLString },
+    loc: { type: _graphql.GraphQLString },
+    path: { type: _graphql.GraphQLString },
+    big: { type: _graphql.GraphQLString },
+    normal: { type: _graphql.GraphQLString },
+    small: { type: _graphql.GraphQLString },
+    fileType: { type: _graphql.GraphQLInt },
+    createdAt: { type: MillisecondsType }
   }
 });
 

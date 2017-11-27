@@ -150,6 +150,21 @@ var MsgSchema = new _mongoose2.default.Schema({
   time: { type: Number, default: new Date().getTime() }
 });
 
+/**
+ * FileVote Schema
+ */
+var ImageSchema = new _mongoose2.default.Schema({
+  name: { type: String, default: '', trim: true },
+  caption: { type: String, default: '', trim: true },
+  loc: { type: String },
+  path: { type: String },
+  big: { type: String },
+  normal: { type: String },
+  small: { type: String },
+  fileType: { type: String },
+  createdAt: { type: Number, default: new Date().getTime() }
+});
+
 exports.TournamentSchema = TournamentSchema;
 
 exports.TitleSchema = TitleSchema;
@@ -169,4 +184,6 @@ exports.VoteSchema = VoteSchema;
 exports.InboxSchema = InboxSchema;
 
 exports.MsgSchema = MsgSchema;
+
+exports.ImageSchema = ImageSchema;
 //# sourceMappingURL=vote.js.map

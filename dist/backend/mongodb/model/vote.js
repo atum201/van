@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Msg = exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
+exports.Image = exports.Msg = exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
 
 var _vote = require('../database/vote');
 
@@ -32,4 +32,5 @@ var Rank = exports.Rank = Model("Rank");
 var Vote = exports.Vote = Model("Vote");
 var Inbox = exports.Inbox = Model("Inbox");
 var Msg = exports.Msg = Model("Msg");
+var Image = exports.Image = Model("Image");
 //# sourceMappingURL=vote.js.map
