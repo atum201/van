@@ -16,7 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var gcs = (0, _storage2.default)({
   projectId: 'vote-20119',
-  keyFilename: 'store/key/google-cloud-19vote.json'
+  keyFilename: '../store/key/google-cloud-19vote.json'
 });
 
 var appEngine = "https://vote-20119.appspot.com/";
