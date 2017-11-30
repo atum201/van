@@ -24,9 +24,9 @@ var _multer = require('multer');
 
 var _multer2 = _interopRequireDefault(_multer);
 
-var _path3 = require('path');
+var _path = require('path');
 
-var _path4 = _interopRequireDefault(_path3);
+var _path2 = _interopRequireDefault(_path);
 
 var _google = require('./google');
 
@@ -61,7 +61,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var storage = _multer2.default.memoryStorage();
 var uploadImage = (0, _multer2.default)({ storage: storage });
 var uploadImages = (0, _multer2.default)({ storage: storage }).any('images');
-var uploadFile = (0, _multer2.default)({ dest: _path4.default.join(__dirname, '../public/uploads/') }).any('recfiles');
+var uploadFile = (0, _multer2.default)({ dest: _path2.default.join(__dirname, '../public/uploads/') }).any('recfiles');
 // let uploadFile = multer({ dest: path.join(__dirname,'../public/uploads/')}).any('recfiles')
 
 var app = (0, _express2.default)();
@@ -89,18 +89,15 @@ app.use(_express2.default.static('dist/public'));
 
 app.post('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
   var data = req.body;
-  if (req.file && (req.file.big || req.file.normal || req.file.small)) {
+  if (req.file && req.file.link) {
     var _req$file = req.file,
-        _req$file$name = _req$file.name,
-        name = _req$file$name === undefined ? req.file.originalname : _req$file$name,
-        loc = _req$file.loc,
-        _path = _req$file.path,
-        big = _req$file.big,
-        normal = _req$file.normal,
-        small = _req$file.small,
+        link = _req$file.link,
+        cloud = _req$file.cloud,
+        name = _req$file.name,
+        bucket = _req$file.bucket,
         mimetype = _req$file.mimetype;
 
-    var img = new _mongodb.Image({ name: name, big: big, normal: normal, small: small, fileType: mimetype, loc: loc, path: _path });
+    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
     img.saveAsync().then(function (file) {
       res.send((0, _util.standardDoc)(file));
     });
@@ -108,21 +105,17 @@ app.post('/upload/image', uploadImage.single('image'), _google.ImgUpload, functi
     res.send({});
   }
 });
-
-app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
+app.post('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
   var data = req.body;
-  if (req.file && (req.file.big || req.file.normal || req.file.small)) {
+  if (req.file && req.file.link) {
     var _req$file2 = req.file,
-        _req$file2$name = _req$file2.name,
-        name = _req$file2$name === undefined ? req.file.originalname : _req$file2$name,
-        loc = _req$file2.loc,
-        _path2 = _req$file2.path,
-        big = _req$file2.big,
-        normal = _req$file2.normal,
-        small = _req$file2.small,
+        link = _req$file2.link,
+        cloud = _req$file2.cloud,
+        name = _req$file2.name,
+        bucket = _req$file2.bucket,
         mimetype = _req$file2.mimetype;
 
-    var img = new _mongodb.Image({ name: name, big: big, normal: normal, small: small, fileType: mimetype, loc: loc, path: _path2 });
+    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
     img.saveAsync().then(function (file) {
       res.send((0, _util.standardDoc)(file));
     });
@@ -130,22 +123,31 @@ app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, functio
     res.send({});
   }
 });
+// Use Sharp
+// app.get('/upload/image',uploadImage.single('image'),ImgUpload,function (req,res) {
+//   const data = req.body;
+//   if (req.file && (req.file.big || req.file.normal || req.file.small)) {
+//     let {name= req.file.originalname,loc,path,big,normal,small,mimetype} = req.file;
+//     let img = new Image({name,big,normal,small,fileType:mimetype,loc,path});
+//     img.saveAsync().then(file=>{
+//       res.send(standardDoc(file));
+//     });
+//   }else{
+//     res.send({});
+//   }
+// });
 
 app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res) {
   var data = req.body;
   if (req.files.length > 0) {
     Promise.all(req.files.map(function (file) {
-      var _file$name = file.name,
-          name = _file$name === undefined ? file.originalname : _file$name,
-          _file$loc = file.loc,
-          loc = _file$loc === undefined ? 'google' : _file$loc,
-          path = file.path,
-          big = file.big,
-          normal = file.normal,
-          small = file.small,
+      var link = file.link,
+          cloud = file.cloud,
+          name = file.name,
+          bucket = file.bucket,
           mimetype = file.mimetype;
 
-      var img = new _mongodb.Image({ name: name, big: big, normal: normal, small: small, fileType: mimetype, loc: loc, path: path });
+      var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
       return img.saveAsync();
     })).then(function (values) {
       res.send(values.map(function (v) {
@@ -156,22 +158,17 @@ app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res)
     res.send([]);
   }
 });
-
 app.get('/upload/images', uploadImages, _google.ImgUploads, function (req, res) {
   var data = req.body;
   if (req.files.length > 0) {
     Promise.all(req.files.map(function (file) {
-      var _file$name2 = file.name,
-          name = _file$name2 === undefined ? file.originalname : _file$name2,
-          _file$loc2 = file.loc,
-          loc = _file$loc2 === undefined ? 'google' : _file$loc2,
-          path = file.path,
-          big = file.big,
-          normal = file.normal,
-          small = file.small,
+      var link = file.link,
+          cloud = file.cloud,
+          name = file.name,
+          bucket = file.bucket,
           mimetype = file.mimetype;
 
-      var img = new _mongodb.Image({ name: name, big: big, normal: normal, small: small, fileType: mimetype, loc: loc, path: path });
+      var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
       return img.saveAsync();
     })).then(function (values) {
       res.send(values.map(function (v) {
@@ -182,6 +179,21 @@ app.get('/upload/images', uploadImages, _google.ImgUploads, function (req, res) 
     res.send([]);
   }
 });
+// Use Sharp
+// app.get('/upload/images',uploadImages,ImgUploads,function (req,res) {
+//   const data = req.body;
+//   if(req.files.length > 0){
+//     Promise.all(req.files.map(file=>{
+//       let {name=file.originalname,loc='google',path,big,normal,small,mimetype} = file;
+//       let img = new Image({name,big,normal,small,fileType:mimetype,loc,path});
+//       return img.saveAsync();
+//     })).then(values=>{
+//       res.send(values.map(v=>standardDoc(v)));
+//     })
+//   }else{
+//     res.send([]);
+//   }
+// });
 
 app.post('/api/upload', uploadFile, function (req, res) {
   var _loop = function _loop(i) {

@@ -154,13 +154,12 @@ var MsgSchema = new _mongoose2.default.Schema({
  * FileVote Schema
  */
 var ImageSchema = new _mongoose2.default.Schema({
-  name: { type: String, default: '', trim: true },
-  caption: { type: String, default: '', trim: true },
-  loc: { type: String },
-  path: { type: String },
-  big: { type: String },
-  normal: { type: String },
-  small: { type: String },
+  bucket: { type: String },
+  name: { type: String },
+  link: { type: String },
+  title: { type: String, default: '' },
+  caption: { type: String, default: '' },
+  cloud: { type: String, default: 'google', trim: true },
   fileType: { type: String },
   createdAt: { type: Number, default: new Date().getTime() }
 });

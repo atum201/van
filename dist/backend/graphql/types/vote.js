@@ -285,11 +285,10 @@ var ImageType = exports.ImageType = new _graphql.GraphQLObjectType({
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
     name: { type: _graphql.GraphQLString },
     caption: { type: _graphql.GraphQLString },
-    loc: { type: _graphql.GraphQLString },
-    path: { type: _graphql.GraphQLString },
-    big: { type: _graphql.GraphQLString },
-    normal: { type: _graphql.GraphQLString },
-    small: { type: _graphql.GraphQLString },
+    bucket: { type: _graphql.GraphQLString },
+    cloud: { type: _graphql.GraphQLString },
+    title: { type: _graphql.GraphQLString },
+    link: { type: _graphql.GraphQLString },
     fileType: { type: _graphql.GraphQLInt },
     createdAt: { type: MillisecondsType }
   }
