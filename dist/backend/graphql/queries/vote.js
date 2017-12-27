@@ -29,13 +29,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var FindType = GraphQLType.FindType;
+var FindType = GraphQLType.FindType,
+    PageType = GraphQLType.PageType;
 
 
 var makeQuery = function makeQuery(graphQLType, model, multi, id) {
   if (multi) {
     return {
-      type: new _graphql.GraphQLList(graphQLType),
+      type: PageType(graphQLType),
       args: {
         q: FindType
       },
@@ -46,11 +47,14 @@ var makeQuery = function makeQuery(graphQLType, model, multi, id) {
             page = q.page,
             size = q.size;
 
-        return model.findAsync(find || {}).then(function (docs) {
-          return docs.map(function (doc) {
-            return (0, _util.standardDoc)(doc);
-          });
-        }).error(function (e) {});
+        var skip = page * size;
+        return model.where(find || {}).countAsync().then(function (sum) {
+          return model.findAsync(find || {}, null, { limit: size, skip: skip, sort: sort }).then(function (docs) {
+            return { sum: sum, page: page, size: size, item: docs.map(function (doc) {
+                return (0, _util.standardDoc)(doc);
+              }) };
+          }).error(function (e) {});
+        });
       }
     };
   } else if (id) {

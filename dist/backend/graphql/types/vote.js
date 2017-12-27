@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -70,6 +70,19 @@ var SubmitType = exports.SubmitType = {
   }) };
 
 // Output Type
+
+var PageType = exports.PageType = function PageType(type) {
+  return new _graphql.GraphQLObjectType({
+    name: type.name + 'Page',
+    fields: {
+      sum: { type: _graphql.GraphQLInt },
+      page: { type: _graphql.GraphQLInt },
+      size: { type: _graphql.GraphQLInt },
+      item: { type: new _graphql.GraphQLList(type) }
+    }
+  });
+};
+
 var EmprireType = exports.EmprireType = new _graphql.GraphQLObjectType({
   name: 'Emprire',
   fields: {
@@ -285,9 +298,13 @@ var ImageType = exports.ImageType = new _graphql.GraphQLObjectType({
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
     name: { type: _graphql.GraphQLString },
     caption: { type: _graphql.GraphQLString },
-    bucket: { type: _graphql.GraphQLString },
-    cloud: { type: _graphql.GraphQLString },
+    // bucket:{type:StringType},
+    // cloud:{type:StringType},
+    // blob_key:{type:String},
     title: { type: _graphql.GraphQLString },
+    category: { type: _graphql.GraphQLString },
+    temp: { type: _graphql.GraphQLString },
+    state: { type: _graphql.GraphQLString },
     link: { type: _graphql.GraphQLString },
     fileType: { type: _graphql.GraphQLInt },
     createdAt: { type: MillisecondsType }

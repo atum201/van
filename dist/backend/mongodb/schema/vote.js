@@ -160,9 +160,30 @@ var ImageSchema = new _mongoose2.default.Schema({
   title: { type: String, default: '' },
   caption: { type: String, default: '' },
   cloud: { type: String, default: 'google', trim: true },
+  blob_key: { type: String },
+  category: { type: String },
+  temp: { type: String },
+  state: { type: String },
   fileType: { type: String },
   createdAt: { type: Number, default: new Date().getTime() }
 });
+
+ImageSchema.statics = {
+  get: function get(id) {
+    return this.findById(id).execAsync().then(function (img) {
+      if (img) {
+        return img;
+      }
+      return Promise.reject(err);
+    });
+  },
+  list: function list() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var criteria = options.query || {};
+    return this.find(criteria).sort({ createdAt: -1 }).execAsync();
+  }
+};
 
 exports.TournamentSchema = TournamentSchema;
 
