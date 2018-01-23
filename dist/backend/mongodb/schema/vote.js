@@ -185,6 +185,11 @@ ImageSchema.statics = {
   }
 };
 
+var DocSchema = new _mongoose2.default.Schema({
+  type: { type: String },
+  content: _mongoose2.default.Schema.Types.Mixed
+});
+
 exports.TournamentSchema = TournamentSchema;
 
 exports.TitleSchema = TitleSchema;
@@ -206,4 +211,6 @@ exports.InboxSchema = InboxSchema;
 exports.MsgSchema = MsgSchema;
 
 exports.ImageSchema = ImageSchema;
+
+exports.DocSchema = DocSchema;
 //# sourceMappingURL=vote.js.map

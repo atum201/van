@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = undefined;
+exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = undefined;
 
 var _lodash = require('lodash');
 
@@ -44,8 +44,8 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
           action = data.action;
 
       if (action === _constant.ADD) {
-        var doc = new col(payload);
-        return doc.saveAsync().then(function (d) {
+        var _doc = new col(payload);
+        return _doc.saveAsync().then(function (d) {
           return (0, _util.standardDoc)(d);
         }).error(function (e) {
           return {
@@ -99,4 +99,5 @@ var vote = exports.vote = makeSubmit(GraphQLType.VoteType, Model.Vote);
 var inbox = exports.inbox = makeSubmit(GraphQLType.InboxType, Model.Inbox);
 var msg = exports.msg = makeSubmit(GraphQLType.MsgType, Model.Msg);
 var image = exports.image = makeSubmit(GraphQLType.ImageType, Model.Image);
+var doc = exports.doc = makeSubmit(GraphQLType.DocType, Model.Doc);
 //# sourceMappingURL=vote.js.map

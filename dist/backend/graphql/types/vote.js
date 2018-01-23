@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -332,6 +332,14 @@ var ResponseVoteType = exports.ResponseVoteType = new _graphql.GraphQLObjectType
     action: { type: _graphql.GraphQLString },
     state: { type: _graphql.GraphQLString },
     payload: { type: CommonVoteType }
+  }
+});
+
+var DocType = exports.DocType = new _graphql.GraphQLObjectType({
+  name: 'Doc',
+  fields: {
+    type: { type: _graphql.GraphQLString },
+    content: { type: ScaleType }
   }
 });
 //# sourceMappingURL=vote.js.map
