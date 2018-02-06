@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.ResponseType = exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -107,6 +107,7 @@ var MemberType = exports.MemberType = new _graphql.GraphQLObjectType({
     avatar: { type: _graphql.GraphQLString },
     banner: { type: _graphql.GraphQLString },
     phone: { type: _graphql.GraphQLString },
+    email: { type: _graphql.GraphQLString },
     slogan: { type: _graphql.GraphQLString },
     point: { type: _graphql.GraphQLInt },
     winGame: { type: _graphql.GraphQLInt },
@@ -340,6 +341,14 @@ var DocType = exports.DocType = new _graphql.GraphQLObjectType({
   fields: {
     type: { type: _graphql.GraphQLString },
     content: { type: ScaleType }
+  }
+});
+
+var ResponseType = exports.ResponseType = new _graphql.GraphQLObjectType({
+  name: 'Response',
+  fields: {
+    state: { type: _graphql.GraphQLInt },
+    message: { type: _graphql.GraphQLString }
   }
 });
 //# sourceMappingURL=vote.js.map

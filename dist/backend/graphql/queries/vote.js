@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.docId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.memberId = exports.docs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.members = exports.emprires = undefined;
+exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.docId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.memberId = exports.docs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.members = exports.emprires = exports.signin = undefined;
 
 var _graphql = require('graphql');
 
@@ -30,7 +30,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var FindType = GraphQLType.FindType,
-    PageType = GraphQLType.PageType;
+    PageType = GraphQLType.PageType,
+    ResponseType = GraphQLType.ResponseType;
 
 
 var makeQuery = function makeQuery(graphQLType, model, multi, id) {
@@ -91,6 +92,32 @@ var makeQuery = function makeQuery(graphQLType, model, multi, id) {
     };
   }
 };
+
+var signin = exports.signin = {
+  type: ResponseType,
+  args: {
+    username: {
+      type: _graphql.GraphQLString
+    },
+    password: {
+      type: _graphql.GraphQLString
+    }
+  },
+  resolve: function resolve(root, _ref4) {
+    var username = _ref4.username,
+        password = _ref4.password;
+    var Member = Model.Member;
+
+    return Member.findOneAsync({ $or: [{ username: username }, { password: password }] }).then(function (doc) {
+      if (doc) {
+        return { state: _constant.STATE_SUCCESS };
+      } else {
+        return { state: _constant.STATE_NOT_FOUND };
+      }
+    });
+  }
+};
+
 var emprires = exports.emprires = {
   type: new _graphql.GraphQLList(GraphQLType.EmprireType),
   args: {
@@ -98,8 +125,8 @@ var emprires = exports.emprires = {
       type: _graphql.GraphQLString
     }
   },
-  resolve: function resolve(root, _ref4) {
-    var t = _ref4.t;
+  resolve: function resolve(root, _ref5) {
+    var t = _ref5.t;
 
     var emps = _constant.voteConst.empriresShort;
     var emp = _constant.voteConst.emprires.map(function (emprire, id) {

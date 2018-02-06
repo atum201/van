@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = undefined;
+exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.signup = undefined;
 
 var _lodash = require('lodash');
 
@@ -29,7 +29,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SubmitType = GraphQLType.SubmitType;
+var SubmitType = GraphQLType.SubmitType,
+    ResponseType = GraphQLType.ResponseType;
 
 
 var makeSubmit = function makeSubmit(graphQLType, col) {
@@ -87,6 +88,38 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
       }
     }
   };
+};
+
+var signup = exports.signup = {
+  type: ResponseType,
+  args: {
+    data: SubmitType
+  },
+  resolve: function resolve(root, _ref2) {
+    var data = _ref2.data;
+    var _data$payload = data.payload,
+        username = _data$payload.username,
+        password = _data$payload.password,
+        email = _data$payload.email,
+        phone = _data$payload.phone;
+    var Member = Model.Member;
+
+    return Member.findOneAsync({ username: username }).then(function (doc) {
+      if (doc) {
+        return { state: _constant.STATE_ERROR, message: 'Tài khoản/Email đã tồn tại' };
+      } else {
+        var mem = new Member({
+          username: username,
+          password: password,
+          email: email,
+          phone: phone
+        });
+        return mem.saveAsync().then(function () {
+          return { state: _constant.STATE_SUCCESS };
+        });
+      }
+    });
+  }
 };
 
 var member = exports.member = makeSubmit(GraphQLType.MemberType, Model.Member);

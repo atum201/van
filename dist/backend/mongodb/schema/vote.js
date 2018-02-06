@@ -39,6 +39,7 @@ var MemberSchema = new _mongoose2.default.Schema({
   avatar: { type: String },
   banner: { type: String },
   phone: { type: String },
+  email: { type: String },
   slogan: { type: String },
 
   point: { type: Number },
