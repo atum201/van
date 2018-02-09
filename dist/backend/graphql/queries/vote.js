@@ -108,7 +108,7 @@ var signin = exports.signin = {
         password = _ref4.password;
     var Member = Model.Member;
 
-    return Member.findOneAsync({ $or: [{ username: username }, { password: password }] }).then(function (doc) {
+    return Member.findOneAsync({ $and: [{ username: username }, { password: password }] }).then(function (doc) {
       if (doc) {
         return { state: _constant.STATE_SUCCESS };
       } else {

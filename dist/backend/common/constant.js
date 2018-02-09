@@ -44,6 +44,7 @@ var fileTypeFA = exports.fileTypeFA = [["fa-file-o", "fa-file-word-o", "fa-file-
 ['application/zip', 'application/x-rar-compressed', 'application/x-msdownload', 'application/x-msdownload', 'application/vnd.ms-cab-compressed'] // zip
 ];
 
+// AOE Common constant
 var voteConst = exports.voteConst = {
                 emprires: ["sang", "assyrian", "egyptian", "hittle", "phoenician", "palmyran", "sumerian", "babylonian", "yamoto", "roman", "persian", "macedonian", "minoan", "carthagian", "choson", "greek"],
                 empriresShort: ["sang", "asy", "egypt", "hittle", "phonix", "parmy", "summer", "baby", "yamoto", "roman", "persi", "macxe", "mioan", "catha", "choson", "greek"],
@@ -51,37 +52,6 @@ var voteConst = exports.voteConst = {
                 thethuc: ["solo", "22", "33", "44", "doanthe"],
                 tinhchat: ["giaoluunoibo", "giaoluu", "giaoluuquocte", "giaidaunoibo", "giaidau", "giaidauquocte"],
                 vaitro: ["ongbau", "gamethu", "mod", "chimlontamhuyet", "fan", "nhataitro"] };
-
-var PlayerField = exports.PlayerField = ["shortName"];
-var PalerFieldName = exports.PalerFieldName = ["Tên gọi khác"];
-var CREATE_PLAYER = exports.CREATE_PLAYER = "create player",
-    UPDATE_PLAYER = exports.UPDATE_PLAYER = "update player",
-    REMOVE_PLAYER = exports.REMOVE_PLAYER = "remove player",
-    LEAVE_CLAN = exports.LEAVE_CLAN = "leave clan",
-    JOIN_CLAN = exports.JOIN_CLAN = "join clan",
-    CREATE_CLAN = exports.CREATE_CLAN = "create clan",
-    UPDATE_CLAN = exports.UPDATE_CLAN = "update clan",
-    REMOVE_CLAN = exports.REMOVE_CLAN = "remove clan",
-    CREATE_TOURNAMENT = exports.CREATE_TOURNAMENT = "create tournament",
-    UPDATE_TOURNAMENT = exports.UPDATE_TOURNAMENT = "update tournament",
-    REMOVE_TOURNAMENT = exports.REMOVE_TOURNAMENT = "remove tournament",
-    REGISTER_TOURNAMENT = exports.REGISTER_TOURNAMENT = "register tournament",
-    INVITE_TOURNAMENT = exports.INVITE_TOURNAMENT = "invite tournament",
-    ACCEPT_TOURNAMENT = exports.ACCEPT_TOURNAMENT = "accept tournament",
-    QUIT_TOURNAMENT = exports.QUIT_TOURNAMENT = "quit tournament",
-    CANCEL_TOURNAMENT = exports.CANCEL_TOURNAMENT = "cancel tournament",
-    CREATE_MATCH = exports.CREATE_MATCH = "create match",
-    UPDATE_MATCH = exports.UPDATE_MATCH = "update match",
-    REMOVE_MATCH = exports.REMOVE_MATCH = "remove match",
-    INVITE_MATCH = exports.INVITE_MATCH = "invite match",
-    ACCEPT_MATCH = exports.ACCEPT_MATCH = "accept match",
-    REJECT_MATCH = exports.REJECT_MATCH = "reject match",
-    CANCEL_MATCH = exports.CANCEL_MATCH = "cancel match",
-    CREATE_VOTE = exports.CREATE_VOTE = "create vote",
-    UPDATE_VOTE = exports.UPDATE_VOTE = "update vote",
-    REMOVE_VOTE = exports.REMOVE_VOTE = "remove vote";
-
-// Mutation
 var ADD = exports.ADD = "add",
     EDIT = exports.EDIT = "edit",
     UPDATE = exports.UPDATE = "update",
