@@ -26,7 +26,7 @@ var ClanSchema = new _mongoose2.default.Schema({
 });
 // Member Model Data 
 var MemberSchema = new _mongoose2.default.Schema({
-  account: { type: String },
+  username: { type: String },
   password: { type: String },
   level: { type: Number },
   type: { type: Number }, //0: voter, 1: player,2:boss,3:mod,4:admin

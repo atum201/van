@@ -95,7 +95,7 @@ var MemberType = exports.MemberType = new _graphql.GraphQLObjectType({
   name: 'Member',
   fields: {
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
-    account: { type: _graphql.GraphQLString },
+    username: { type: _graphql.GraphQLString },
     password: { type: _graphql.GraphQLString },
     level: { type: _graphql.GraphQLInt },
     type: { type: _graphql.GraphQLInt },
