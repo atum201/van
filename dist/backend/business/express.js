@@ -113,7 +113,10 @@ app.post('/upload/img', updateImgTemp.single('image'), function (req, res) {
     });
   });
 });
-
+var checkRequest = function checkRequest(req, res, next) {
+  console.log("Log body request update", req.body);
+  next();
+};
 app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
   var data = req.body;
   if (req.file && req.file.link) {
@@ -132,7 +135,7 @@ app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, functio
     res.send({});
   }
 });
-app.post('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
+app.post('/upload/image', checkRequest, uploadImage.single('image'), _google.ImgUpload, function (req, res) {
   var data = req.body;
   if (req.file && req.file.link) {
     var _req$file2 = req.file,
