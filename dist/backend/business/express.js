@@ -154,6 +154,43 @@ app.post('/upload/image', checkRequest, uploadImage.single('image'), _google.Img
   }
 });
 
+app.get('/upload/index.html', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
+  var data = req.body;
+  if (req.file && req.file.link) {
+    var _req$file3 = req.file,
+        link = _req$file3.link,
+        cloud = _req$file3.cloud,
+        name = _req$file3.name,
+        bucket = _req$file3.bucket,
+        mimetype = _req$file3.mimetype;
+
+    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
+    img.saveAsync().then(function (file) {
+      res.send((0, _util.standardDoc)(file));
+    });
+  } else {
+    res.send({});
+  }
+});
+app.post('/upload/index.html', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
+  var data = req.body;
+  if (req.file && req.file.link) {
+    var _req$file4 = req.file,
+        link = _req$file4.link,
+        cloud = _req$file4.cloud,
+        name = _req$file4.name,
+        bucket = _req$file4.bucket,
+        mimetype = _req$file4.mimetype;
+
+    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
+    img.saveAsync().then(function (file) {
+      res.send((0, _util.standardDoc)(file));
+    });
+  } else {
+    res.send({});
+  }
+});
+
 // });
 
 app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res) {
