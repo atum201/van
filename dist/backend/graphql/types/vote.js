@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseType = exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.ResponseType = exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImgType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -307,6 +307,19 @@ var ImageType = exports.ImageType = new _graphql.GraphQLObjectType({
     temp: { type: _graphql.GraphQLString },
     state: { type: _graphql.GraphQLString },
     link: { type: _graphql.GraphQLString },
+    fileType: { type: _graphql.GraphQLInt },
+    createdAt: { type: MillisecondsType }
+  }
+});
+
+var ImgType = exports.ImgType = new _graphql.GraphQLObjectType({
+  name: 'Img',
+  fields: {
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    name: { type: _graphql.GraphQLString },
+    title: { type: _graphql.GraphQLString },
+    type: { type: _graphql.GraphQLString },
+    path: { type: _graphql.GraphQLString },
     fileType: { type: _graphql.GraphQLInt },
     createdAt: { type: MillisecondsType }
   }

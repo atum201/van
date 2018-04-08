@@ -32,9 +32,17 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _sharp = require('sharp');
+
+var _sharp2 = _interopRequireDefault(_sharp);
+
+var _mongodb = require('mongodb');
+
 var _google = require('../common/google');
 
-var _mongodb = require('../mongodb');
+var _util = require('../common/util');
+
+var _mongodb2 = require('../mongodb');
 
 var _expressGraphql = require('express-graphql');
 
@@ -56,8 +64,6 @@ var _mysql2 = _interopRequireDefault(_mysql);
 
 var _common = require('../common');
 
-var _util = require('../common/util');
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -65,9 +71,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var storage = _multer2.default.memoryStorage();
 var uploadImage = (0, _multer2.default)({ storage: storage });
 var uploadImages = (0, _multer2.default)({ storage: storage }).any('images');
-var updateImgTemp = (0, _multer2.default)({ dest: _path2.default.join(__dirname, './public/uploads/') });
-var uploadFile = (0, _multer2.default)({ dest: _path2.default.join(__dirname, './public/uploads/') }).any('recfiles');
-// let uploadFile = multer({ dest: path.join(__dirname,'../public/uploads/')}).any('recfiles')
+var uploadFile = (0, _multer2.default)({ dest: _path2.default.join(__dirname, '../../public/uploads/') }).any('recfiles');
+
+var ImageSharpTool = function ImageSharpTool(file, query) {
+  return new Promise(function (resolve, reject) {
+    var _query$c = query.c,
+        c = _query$c === undefined ? 1 : _query$c,
+        _query$w = query.w,
+        w = _query$w === undefined ? 350 : _query$w,
+        _query$q = query.q,
+        q = _query$q === undefined ? 50 : _query$q,
+        _query$n = query.n,
+        n = _query$n === undefined ? (0, _util.randomString)(8) + '-' + new Date().getTime() : _query$n,
+        t = query.t;
+
+
+    (0, _sharp2.default)(file.buffer).toBuffer({}, function (err, buffer, info) {
+      if (err) reject(err);
+      var width = info.width,
+          height = info.height;
+
+      w = w > width ? width : w;
+      var quality = q;
+      (0, _sharp2.default)(buffer).resize(w).jpeg({ quality: quality }).webp({ quality: quality }).png({ quality: quality }).toFile(_path2.default.join(__dirname, '../../public/img/' + c + '/' + n + '.png'), function (err, info) {
+        var img = new _mongodb2.Img({
+          path: '/img/' + c + '/' + n + '.png',
+          title: t,
+          name: n,
+          type: c
+        });
+        img.saveAsync().then(function (img) {
+          return resolve(img);
+        });
+      });
+    });
+  });
+};
 
 var app = (0, _express2.default)();
 
@@ -92,32 +131,8 @@ app.get('/', function (req, res) {
 
 app.use(_express2.default.static('dist/public'));
 
-app.post('/upload/img', updateImgTemp.single('image'), function (req, res) {
-  var _req$query = req.query,
-      _req$query$bucket = _req$query.bucket,
-      bucket = _req$query$bucket === undefined ? '19vote' : _req$query$bucket,
-      _req$query$name = _req$query.name,
-      name = _req$query$name === undefined ? bucket + '-' + new Date().getTime() : _req$query$name,
-      _req$query$cloud = _req$query.cloud,
-      cloud = _req$query$cloud === undefined ? 'google' : _req$query$cloud;
-
-  var img = new _mongodb.Image({ name: name, fileType: req.file.mimetype, temp: req.file.path, state: "0" });
-  img.saveAsync().then(function (img) {
-    res.send((0, _util.standardDoc)(img));
-    _fs2.default.readFile(req.file.path, function (err, data) {
-      (0, _google.pushGoogleCloud)(data, cloud, bucket, img._id || img.id, req.file.mimetype).then(function (link) {
-        img.link = link;
-        img.state = '1';
-        img.saveAsync();
-      });
-    });
-  });
-});
-var checkRequest = function checkRequest(req, res, next) {
-  console.log("Log body request update", req.body);
-  next();
-};
-app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
+// upload image to google cloud
+app.post('/upload/image', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
   var data = req.body;
   if (req.file && req.file.link) {
     var _req$file = req.file,
@@ -127,7 +142,7 @@ app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, functio
         bucket = _req$file.bucket,
         mimetype = _req$file.mimetype;
 
-    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
+    var img = new _mongodb2.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
     img.saveAsync().then(function (file) {
       res.send((0, _util.standardDoc)(file));
     });
@@ -135,63 +150,6 @@ app.get('/upload/image', uploadImage.single('image'), _google.ImgUpload, functio
     res.send({});
   }
 });
-app.post('/upload/image', checkRequest, uploadImage.single('image'), _google.ImgUpload, function (req, res) {
-  var data = req.body;
-  if (req.file && req.file.link) {
-    var _req$file2 = req.file,
-        link = _req$file2.link,
-        cloud = _req$file2.cloud,
-        name = _req$file2.name,
-        bucket = _req$file2.bucket,
-        mimetype = _req$file2.mimetype;
-
-    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
-    img.saveAsync().then(function (file) {
-      res.send((0, _util.standardDoc)(file));
-    });
-  } else {
-    res.send({});
-  }
-});
-
-app.get('/upload/index.html', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
-  var data = req.body;
-  if (req.file && req.file.link) {
-    var _req$file3 = req.file,
-        link = _req$file3.link,
-        cloud = _req$file3.cloud,
-        name = _req$file3.name,
-        bucket = _req$file3.bucket,
-        mimetype = _req$file3.mimetype;
-
-    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
-    img.saveAsync().then(function (file) {
-      res.send((0, _util.standardDoc)(file));
-    });
-  } else {
-    res.send({});
-  }
-});
-app.post('/upload/index.html', uploadImage.single('image'), _google.ImgUpload, function (req, res) {
-  var data = req.body;
-  if (req.file && req.file.link) {
-    var _req$file4 = req.file,
-        link = _req$file4.link,
-        cloud = _req$file4.cloud,
-        name = _req$file4.name,
-        bucket = _req$file4.bucket,
-        mimetype = _req$file4.mimetype;
-
-    var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
-    img.saveAsync().then(function (file) {
-      res.send((0, _util.standardDoc)(file));
-    });
-  } else {
-    res.send({});
-  }
-});
-
-// });
 
 app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res) {
   var data = req.body;
@@ -203,7 +161,7 @@ app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res)
           bucket = file.bucket,
           mimetype = file.mimetype;
 
-      var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
+      var img = new _mongodb2.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
       return img.saveAsync();
     })).then(function (values) {
       res.send(values.map(function (v) {
@@ -214,41 +172,29 @@ app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res)
     res.send([]);
   }
 });
-app.get('/upload/images', uploadImages, _google.ImgUploads, function (req, res) {
-  var data = req.body;
-  if (req.files.length > 0) {
-    Promise.all(req.files.map(function (file) {
-      var link = file.link,
-          cloud = file.cloud,
-          name = file.name,
-          bucket = file.bucket,
-          mimetype = file.mimetype;
-
-      var img = new _mongodb.Image({ link: link, cloud: cloud, name: name, bucket: bucket, fileType: mimetype });
-      return img.saveAsync();
-    })).then(function (values) {
-      res.send(values.map(function (v) {
-        return (0, _util.standardDoc)(v);
-      }));
-    });
-  } else {
-    res.send([]);
-  }
+// upload image to server local
+app.post('/api/images', uploadImages, function (req, res) {
+  if (!req.files) return next();
+  Promise.all(req.files.map(function (file) {
+    return ImageSharpTool(file, req.query);
+  })).then(function (values) {
+    res.send(values);
+  });
 });
-
+// upload file to server local, chat cu
 app.post('/api/upload', uploadFile, function (req, res) {
   var _loop = function _loop(i) {
-    var file = new _mongodb.File({
+    var file = new _mongodb2.File({
       fileName: req.files[i].originalname,
       fileType: req.files[i].mimetype,
       path: req.files[i].path,
-      creater: ObjectID(req.body.from)
+      creater: (0, _mongodb.ObjectID)(req.body.from)
     });
     file.saveAsync().then(function (file) {
       var message = new Message({
-        from: req.body ? ObjectID(req.body.from) : undefined,
-        toGroup: req.body.toGroup ? ObjectID(req.body.toGroup) : undefined,
-        toUser: req.body.toUser ? ObjectID(req.body.toUser) : undefined,
+        from: req.body ? (0, _mongodb.ObjectID)(req.body.from) : undefined,
+        toGroup: req.body.toGroup ? (0, _mongodb.ObjectID)(req.body.toGroup) : undefined,
+        toUser: req.body.toUser ? (0, _mongodb.ObjectID)(req.body.toUser) : undefined,
         content: "<a href=\"/download/" + file.id + "\" class=\"fileattach\"><i class=\"fa " + getFileTypeFA(file.fileType) + " fa-3x\"></i>" + file.fileName + "</a>",
         state: 0,
         time: new Date().getTime()
@@ -261,7 +207,7 @@ app.post('/api/upload', uploadFile, function (req, res) {
               sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
             }
           });
-          User.findOneAsync({ _id: ObjectID(message.toUser) }).then(function (user) {
+          User.findOneAsync({ _id: (0, _mongodb.ObjectID)(message.toUser) }).then(function (user) {
             user.recent = updateRecent(user.recent, message.from.toString());
             user.saveAsync();
           });
@@ -269,14 +215,14 @@ app.post('/api/upload', uploadFile, function (req, res) {
         if (message.toGroup) {
           // gui tin nhan den cac thanh vien trong group dang online.
           type = "group";
-          Group.findOneAsync({ _id: ObjectID(message.toGroup) }).then(function (group) {
+          Group.findOneAsync({ _id: (0, _mongodb.ObjectID)(message.toGroup) }).then(function (group) {
             socker.forEach(function (sk) {
               if (group.member.indexOf(sk.userId) != -1) {
                 sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
               }
             });
             var idsIn = _.flatMap(group.member, function (m) {
-              return ObjectID(m);
+              return (0, _mongodb.ObjectID)(m);
             });
             User.findAsync({ _id: { $in: idsIn } }).then(function (users) {
               users.forEach(function (user) {
@@ -286,7 +232,7 @@ app.post('/api/upload', uploadFile, function (req, res) {
             });
           });
         }
-        User.findOneAsync({ _id: ObjectID(message.from) }).then(function (user) {
+        User.findOneAsync({ _id: (0, _mongodb.ObjectID)(message.from) }).then(function (user) {
           if (!user.recent) {
             user.recent = [];
           }
@@ -305,77 +251,8 @@ app.post('/api/upload', uploadFile, function (req, res) {
   res.end();
 });
 
-app.get('/api/upload', uploadFile, function (req, res) {
-  var _loop2 = function _loop2(i) {
-    var file = new _mongodb.File({
-      fileName: req.files[i].originalname,
-      fileType: req.files[i].mimetype,
-      path: req.files[i].path,
-      creater: ObjectID(req.body.from)
-    });
-    file.saveAsync().then(function (file) {
-      var message = new Message({
-        from: req.body ? ObjectID(req.body.from) : undefined,
-        toGroup: req.body.toGroup ? ObjectID(req.body.toGroup) : undefined,
-        toUser: req.body.toUser ? ObjectID(req.body.toUser) : undefined,
-        content: "<a href=\"/download/" + file.id + "\" class=\"fileattach\"><i class=\"fa " + getFileTypeFA(file.fileType) + " fa-3x\"></i>" + file.fileName + "</a>",
-        state: 0,
-        time: new Date().getTime()
-      });
-      message.saveAsync().then(function (message) {
-        var type = "user";
-        if (message.toUser) {
-          socker.forEach(function (sk) {
-            if (sk.userId == message.toUser || sk.userId == message.from) {
-              sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
-            }
-          });
-          User.findOneAsync({ _id: ObjectID(message.toUser) }).then(function (user) {
-            user.recent = updateRecent(user.recent, message.from.toString());
-            user.saveAsync();
-          });
-        }
-        if (message.toGroup) {
-          // gui tin nhan den cac thanh vien trong group dang online.
-          type = "group";
-          Group.findOneAsync({ _id: ObjectID(message.toGroup) }).then(function (group) {
-            socker.forEach(function (sk) {
-              if (group.member.indexOf(sk.userId) != -1) {
-                sk.emit(SOCKET_GET_MESSAGE, message, req.body.temp[i]);
-              }
-            });
-            var idsIn = _.flatMap(group.member, function (m) {
-              return ObjectID(m);
-            });
-            User.findAsync({ _id: { $in: idsIn } }).then(function (users) {
-              users.forEach(function (user) {
-                user.recent = updateRecent(user.recent, message.toGroup.toString(), "group");
-                user.saveAsync();
-              });
-            });
-          });
-        }
-        User.findOneAsync({ _id: ObjectID(message.from) }).then(function (user) {
-          if (!user.recent) {
-            user.recent = [];
-          }
-          var rid = message.toGroup || message.toUser;
-          var ii = _.findIndex(user.recent, { id: rid });
-          if (ii == -1) user.recent.push({ id: rid, last: new Date().getTime(), type: type });
-          user.saveAsync();
-        });
-      });
-    });
-  };
-
-  for (var i = 0; i < req.files.length; i++) {
-    _loop2(i);
-  };
-  res.end();
-});
-
 app.get('/download/:idfile', function (req, res) {
-  _mongodb.File.get(req.params.idfile).then(function (file) {
+  _mongodb2.File.get(req.params.idfile).then(function (file) {
     res.download(file.path, file.fileName);
   }).error(function (e) {});
 });

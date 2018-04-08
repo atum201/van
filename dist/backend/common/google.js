@@ -12,7 +12,13 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 var _mongodb = require('../mongodb');
+
+var _util = require('./util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -171,63 +177,4 @@ exports.ImgUploads = ImgUploads;
 exports.delImg = delImg;
 exports.pushGoogleCloud = pushGoogleCloud;
 exports.delImageGoogleCloud = delImageGoogleCloud;
-// import sharp from 'sharp'
-// const bucket = {
-//   avatar:{
-//     name:'19avatar',
-//     big:960,
-//     normal:320,
-//     small: 64
-//   },
-//   image:{
-//     name:'19image',
-//     big:1280,
-//     normal:720,
-//     small:320,
-//   }
-// }
-
-// let ImageUploadTool = (file,query) =>{
-//   return new Promise((resolve,reject)=>{
-//     let {
-//       type = 'image',
-//       origin = true,
-//       prefix = type,
-//       name = `${prefix}-${new Date().getTime()}`,
-//       loc = 'google'
-//     } = query;
-//     let {big,normal,small} = bucket[type]
-//     let b = big,n = normal,s = small;
-
-//     sharp(file.buffer).toBuffer({},(err,buffer,info)=>{
-//       if(err)
-//         return next();
-//       let {width,height} = info
-//       let upload = uploadUtil[loc],
-//           mimetype = file.mimetype,
-//           path = bucket[type].name;
-
-//       if(width>big){// 3 image resize
-//         Promise.all([
-//           sharp(buffer).resize(big).toBuffer().then(b=>upload(name+'-big',mimetype,b,bucket[type].name)),
-//           sharp(buffer).resize(normal).toBuffer().then(b=>upload(name+'-normal',mimetype,b,bucket[type].name)),
-//           sharp(buffer).resize(small).toBuffer().then(b=>upload(name+'-small',mimetype,b,bucket[type].name))
-//         ]).then(values=> resolve({big:values[0],normal:values[1],small:values[2],loc,path}))
-//       }else if(width>normal){// 3 image 2 resize
-//         Promise.all([
-//           upload(name+'-big',mimetype,buffer,bucket[type].name),
-//           sharp(buffer).resize(normal).toBuffer().then(b=>upload(name+'-normal',mimetype,b,bucket[type].name)),
-//           sharp(buffer).resize(small).toBuffer().then(b=>upload(name+'-small',mimetype,b,bucket[type].name))
-//         ]).then(values=> resolve({big:values[0],normal:values[1],small:values[2],loc,path}) )
-//       }else if(width>small){ // 2 image 1 resize
-//         Promise.all([
-//           upload(name+'-normal',mimetype,buffer,bucket[type].name),
-//           sharp(buffer).resize(small).toBuffer().then(b=>upload(name+'-small',mimetype,b,bucket[type].name))
-//         ]).then(values=>resolve({normal:values[0],small:values[1],loc,path }))
-//       }else{ // 1 image
-//         upload(name+'-small',mimetype,buffer,bucket[type].name).then(link=>resolve({small:link ,loc,path}))
-//       }
-//     })
-//   })
-// }
 //# sourceMappingURL=google.js.map

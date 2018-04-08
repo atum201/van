@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.doc = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.docId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.memberId = exports.docs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.members = exports.emprires = exports.signin = undefined;
+exports.doc = exports.img = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.docId = exports.imgId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.memberId = exports.docs = exports.imgs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.members = exports.emprires = exports.signin = undefined;
 
 var _graphql = require('graphql');
 
@@ -148,6 +148,7 @@ var votes = exports.votes = makeQuery(GraphQLType.VoteType, Model.Vote, true);
 var inboxs = exports.inboxs = makeQuery(GraphQLType.InboxType, Model.Inbox, true);
 var msgs = exports.msgs = makeQuery(GraphQLType.MsgType, Model.Msg, true);
 var images = exports.images = makeQuery(GraphQLType.ImageType, Model.Image, true);
+var imgs = exports.imgs = makeQuery(GraphQLType.ImgType, Model.Img, true);
 var docs = exports.docs = makeQuery(GraphQLType.DocType, Model.Doc, true);
 
 var memberId = exports.memberId = makeQuery(GraphQLType.MemberType, Model.Member, false, true);
@@ -160,6 +161,7 @@ var voteId = exports.voteId = makeQuery(GraphQLType.VoteType, Model.Vote, false,
 var inboxId = exports.inboxId = makeQuery(GraphQLType.InboxType, Model.Inbox, false, true);
 var msgId = exports.msgId = makeQuery(GraphQLType.MsgType, Model.Msg, false, true);
 var imageId = exports.imageId = makeQuery(GraphQLType.ImageType, Model.Image, false, true);
+var imgId = exports.imgId = makeQuery(GraphQLType.ImgType, Model.Img, false, true);
 var docId = exports.docId = makeQuery(GraphQLType.DocType, Model.Doc, false, true);
 
 var member = exports.member = makeQuery(GraphQLType.MemberType, Model.Member, false);
@@ -172,5 +174,6 @@ var vote = exports.vote = makeQuery(GraphQLType.VoteType, Model.Vote, false);
 var inbox = exports.inbox = makeQuery(GraphQLType.InboxType, Model.Inbox, false);
 var msg = exports.msg = makeQuery(GraphQLType.MsgType, Model.Msg, false);
 var image = exports.image = makeQuery(GraphQLType.ImageType, Model.Image, false);
+var img = exports.img = makeQuery(GraphQLType.ImgType, Model.Img, false);
 var doc = exports.doc = makeQuery(GraphQLType.DocType, Model.Doc, false);
 //# sourceMappingURL=vote.js.map
