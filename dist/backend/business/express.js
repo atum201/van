@@ -104,6 +104,55 @@ var uploadFile = (0, _multer2.default)({ dest: _path2.default.join(__dirname, '.
 //   })
 // }
 
+var ImageTool = function ImageTool(file, query) {
+  return new Promise(function (resolve, reject) {
+    var _query$c = query.c,
+        c = _query$c === undefined ? 1 : _query$c,
+        _query$w = query.w,
+        w = _query$w === undefined ? 350 : _query$w,
+        _query$q = query.q,
+        q = _query$q === undefined ? 50 : _query$q,
+        _query$n = query.n,
+        n = _query$n === undefined ? (0, _util.randomString)(8) + '-' + new Date().getTime() : _query$n,
+        t = query.t;
+
+
+    _fs2.default.writeFile(_path2.default.join(__dirname, '../../public/img/' + c + '/' + n + '.png'), file.buffer, function (err, info) {
+      var img = new _mongodb2.Img({
+        path: '/img/' + c + '/' + n + '.png',
+        title: t,
+        name: n,
+        type: c
+      });
+      img.saveAsync().then(function (img) {
+        return resolve(img);
+      });
+    });
+
+    // sharp(file.buffer).toBuffer({},(err,buffer,info)=>{
+    //   if(err)
+    //     reject(err)
+    //   let {width,height} = info
+    //   w = w > width ? width: w
+    //   let quality=q
+
+    //   sharp(buffer).resize(w)
+    //     .jpeg({quality})
+    //     .webp({quality})
+    //     .png({quality})
+    //     .toFile(path.join(__dirname,`../../public/img/${c}/${n}.png`),(err,info)=>{
+    //       let img = new Img({
+    //         path:`/img/${c}/${n}.png`,
+    //         title:t,
+    //         name:n,
+    //         type:c
+    //       })
+    //       img.saveAsync().then(img=>resolve(img))
+    //     })
+    // })
+  });
+};
+
 var app = (0, _express2.default)();
 
 app.use(_bodyParser2.default.json());
@@ -175,6 +224,15 @@ app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res)
 //     res.send(values)
 //   })
 // });
+app.post('/api/images', uploadImages, function (req, res) {
+  if (!req.files) return next();
+  Promise.all(req.files.map(function (file) {
+    return ImageTool(file, req.query);
+  })).then(function (values) {
+    console.log(values);
+    res.send(values);
+  });
+});
 // upload file to server local, chat cu
 app.post('/api/upload', uploadFile, function (req, res) {
   var _loop = function _loop(i) {
