@@ -32,10 +32,6 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _sharp = require('sharp');
-
-var _sharp2 = _interopRequireDefault(_sharp);
-
 var _mongodb = require('mongodb');
 
 var _google = require('../common/google');
@@ -69,44 +65,44 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var storage = _multer2.default.memoryStorage();
+// import sharp from 'sharp'
+
 var uploadImage = (0, _multer2.default)({ storage: storage });
 var uploadImages = (0, _multer2.default)({ storage: storage }).any('images');
 var uploadFile = (0, _multer2.default)({ dest: _path2.default.join(__dirname, '../../public/uploads/') }).any('recfiles');
 
-var ImageSharpTool = function ImageSharpTool(file, query) {
-  return new Promise(function (resolve, reject) {
-    var _query$c = query.c,
-        c = _query$c === undefined ? 1 : _query$c,
-        _query$w = query.w,
-        w = _query$w === undefined ? 350 : _query$w,
-        _query$q = query.q,
-        q = _query$q === undefined ? 50 : _query$q,
-        _query$n = query.n,
-        n = _query$n === undefined ? (0, _util.randomString)(8) + '-' + new Date().getTime() : _query$n,
-        t = query.t;
+// let ImageSharpTool = (file,query) =>{
+//   return new Promise((resolve,reject)=>{
+//     let {
+//       c=1,
+//       w=350,
+//       q=50,
+//       n = `${randomString(8)}-${new Date().getTime()}`,
+//       t,
+//     } = query
 
-
-    (0, _sharp2.default)(file.buffer).toBuffer({}, function (err, buffer, info) {
-      if (err) reject(err);
-      var width = info.width,
-          height = info.height;
-
-      w = w > width ? width : w;
-      var quality = q;
-      (0, _sharp2.default)(buffer).resize(w).jpeg({ quality: quality }).webp({ quality: quality }).png({ quality: quality }).toFile(_path2.default.join(__dirname, '../../public/img/' + c + '/' + n + '.png'), function (err, info) {
-        var img = new _mongodb2.Img({
-          path: '/img/' + c + '/' + n + '.png',
-          title: t,
-          name: n,
-          type: c
-        });
-        img.saveAsync().then(function (img) {
-          return resolve(img);
-        });
-      });
-    });
-  });
-};
+//     sharp(file.buffer).toBuffer({},(err,buffer,info)=>{
+//       if(err)
+//         reject(err)
+//       let {width,height} = info
+//       w = w > width ? width: w
+//       let quality=q
+//       sharp(buffer).resize(w)
+//         .jpeg({quality})
+//         .webp({quality})
+//         .png({quality})
+//         .toFile(path.join(__dirname,`../../public/img/${c}/${n}.png`),(err,info)=>{
+//           let img = new Img({
+//             path:`/img/${c}/${n}.png`,
+//             title:t,
+//             name:n,
+//             type:c
+//           })
+//           img.saveAsync().then(img=>resolve(img))
+//         })
+//     })
+//   })
+// }
 
 var app = (0, _express2.default)();
 
@@ -173,14 +169,12 @@ app.post('/upload/images', uploadImages, _google.ImgUploads, function (req, res)
   }
 });
 // upload image to server local
-app.post('/api/images', uploadImages, function (req, res) {
-  if (!req.files) return next();
-  Promise.all(req.files.map(function (file) {
-    return ImageSharpTool(file, req.query);
-  })).then(function (values) {
-    res.send(values);
-  });
-});
+// app.post('/api/images',uploadImages,(req,res)=>{
+//   if(!req.files) return next();
+//   Promise.all(req.files.map(file=>ImageSharpTool(file,req.query))).then(values=>{
+//     res.send(values)
+//   })
+// });
 // upload file to server local, chat cu
 app.post('/api/upload', uploadFile, function (req, res) {
   var _loop = function _loop(i) {
