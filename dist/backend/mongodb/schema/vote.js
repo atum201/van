@@ -22,6 +22,7 @@ var ClanSchema = new _mongoose2.default.Schema({
   strength: { type: Number },
   inviteMember: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
   applyMember: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
+  img: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Img" }],
   createdAt: { type: Number, default: new Date().getTime() }
 });
 // Member Model Data 
@@ -51,36 +52,52 @@ var MemberSchema = new _mongoose2.default.Schema({
   team: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Team" }],
   clan: { type: _mongoose2.default.Schema.ObjectId, ref: "Clan" },
   title: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Title" }],
+  img: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Img" }],
   inbox: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Inbox" }]
+});
+var PlayerSchema = new _mongoose2.default.Schema({
+  // thong tin ve player
+  username: { type: String },
+  info: { type: _mongoose2.default.Schema.Types.Mixed },
+  extend: { type: _mongoose2.default.Schema.Types.Mixed },
+  nickName: { type: String },
+  avatar: { type: String },
+  // thong ke ve player
+  point: [[{ type: Number }]], //[[chem,chuluc,kinang,chienthuat,conghien],[...]]
+  rating: [{ type: Number }], //
+  game: [[{ type: Number }]], // [[thang/tongso],[thang gan nhat++]]
+  clan: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Clan" }],
+  title: [{ type: _mongoose2.default.Schema.Types.Mixed }]
 });
 // Match Model Data 
 var GameSchema = new _mongoose2.default.Schema({
   emprire: [{ type: Number }],
-  vote: [{ type: Number }],
-  blame: [{ type: Number }],
+  tp: [[{ type: Number }]],
   win: { type: Number },
-  video: { type: String },
-  time: { type: Number, default: new Date().getTime() }
+  note: [{ type: String }]
 }, { _id: false });
+
 var TurnSchema = new _mongoose2.default.Schema({
   game: [GameSchema],
-  player: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
+  //thong tin turn
+  player: [{ type: String }], // player tham gia
   bo: { type: Number },
-  scored: [{ type: Number }],
-  cash: [{ type: Number }],
-  point: [{ type: Number }],
-  createdAt: { type: Number, default: new Date().getTime() }
+  pt: { type: Number }, // he so gia tri cua turn 
+  dgta: [{ type: Number }], //ty le dong gop: tong game point
+  pr: [{ type: Number }], // dgta,pt=> diem +/- cua turn
+  score: [{ type: Number }]
 }, { _id: false });
 var MatchSchema = new _mongoose2.default.Schema({
   type: { type: String },
-  name: { type: String },
+  title: { type: String },
   tournament: { type: _mongoose2.default.Schema.ObjectId, ref: "Tournament" },
-  team: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Team" }],
-  player: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
-  index: [{ type: Number }],
+  player: [{ type: String }],
+  info: { type: _mongoose2.default.Schema.Types.Mixed },
   turn: [TurnSchema],
   scored: [{ type: Number }],
-  createdAt: { type: Number, default: new Date().getTime() }
+  state: { type: Number }, //0: live, 1 KT
+  extend: { type: _mongoose2.default.Schema.Types.Mixed },
+  time: { type: Number, default: new Date().getTime() }
 });
 // Rank Model Data 
 var RankSchema = new _mongoose2.default.Schema({
@@ -110,6 +127,7 @@ var TournamentSchema = new _mongoose2.default.Schema({
   mod: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
   title: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Title" }],
   member: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Member" }],
+  img: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Img" }],
   createdAt: { type: Number, default: new Date().getTime() }
 });
 var TitleSchema = new _mongoose2.default.Schema({
@@ -224,6 +242,8 @@ exports.TitleSchema = TitleSchema;
 exports.TeamSchema = TeamSchema;
 
 exports.ClanSchema = ClanSchema;
+
+exports.PlayerSchema = PlayerSchema;
 
 exports.MatchSchema = MatchSchema;
 

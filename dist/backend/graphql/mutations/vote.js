@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.doc = exports.img = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.signup = undefined;
+exports.doc = exports.img = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.player = exports.member = exports.signup = undefined;
 
 var _lodash = require('lodash');
 
@@ -123,6 +123,7 @@ var signup = exports.signup = {
 };
 
 var member = exports.member = makeSubmit(GraphQLType.MemberType, Model.Member);
+var player = exports.player = makeSubmit(GraphQLType.PlayerType, Model.Player);
 var clan = exports.clan = makeSubmit(GraphQLType.ClanType, Model.Clan);
 var tournament = exports.tournament = makeSubmit(GraphQLType.TournamentType, Model.Tournament);
 var title = exports.title = makeSubmit(GraphQLType.TitleType, Model.Title);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Doc = exports.Img = exports.Image = exports.Msg = exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Member = undefined;
+exports.Doc = exports.Img = exports.Image = exports.Msg = exports.Inbox = exports.Vote = exports.Rank = exports.Match = exports.Clan = exports.Team = exports.Title = exports.Tournament = exports.Player = exports.Member = undefined;
 
 var _vote = require('../database/vote');
 
@@ -23,6 +23,7 @@ var Model = function Model(name, schema) {
 };
 
 var Member = exports.Member = Model("Member");
+var Player = exports.Player = Model("Player");
 var Tournament = exports.Tournament = Model("Tournament");
 var Title = exports.Title = Model("Title");
 var Team = exports.Team = Model("Team");

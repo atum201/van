@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ResponseType = exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImgType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
+exports.ResponseType = exports.DocType = exports.ResponseVoteType = exports.CommonVoteType = exports.ImgType = exports.ImageType = exports.TitleType = exports.TournamentType = exports.TeamType = exports.MatchType = exports.PlayerType = exports.VoteType = exports.RankType = exports.ClanType = exports.MsgType = exports.InboxType = exports.MemberType = exports.EmprireType = exports.PageType = exports.SubmitType = exports.FindType = exports.InputVoteType = undefined;
 
 var _graphql = require('graphql');
 
@@ -205,15 +205,31 @@ var VoteType = exports.VoteType = new _graphql.GraphQLObjectType({
   }
 });
 
+var PlayerType = exports.PlayerType = new _graphql.GraphQLObjectType({
+  name: 'Player',
+  fields: {
+    id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
+    username: { type: _graphql.GraphQLString },
+    info: { type: ScaleType },
+    extend: { type: ScaleType },
+    nickName: { type: _graphql.GraphQLString },
+    avatar: { type: _graphql.GraphQLString },
+    // thong ke ve player
+    point: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) }, //[[chem,chuluc,kinang,chienthuat,conghien],[...]]
+    rating: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) }, //
+    game: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) }, // [[thang/tongso],[thang gan nhat++]]
+    clan: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    title: { type: new _graphql.GraphQLList(ScaleType) }
+  }
+});
+
 var GameType = new _graphql.GraphQLObjectType({
   name: 'Game',
   fields: {
     emprire: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    vote: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    blame: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    tp: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) },
     win: { type: _graphql.GraphQLInt },
-    video: { type: _graphql.GraphQLString },
-    time: { type: MillisecondsType }
+    note: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
   }
 });
 
@@ -223,10 +239,10 @@ var TurnType = new _graphql.GraphQLObjectType({
     game: { type: new _graphql.GraphQLList(GameType) },
     player: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
     bo: { type: _graphql.GraphQLInt },
-    scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    cash: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    point: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    createdAt: { type: MillisecondsType }
+    pt: { type: _graphql.GraphQLInt },
+    dgta: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    pr: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) }
   }
 });
 
@@ -234,15 +250,15 @@ var MatchType = exports.MatchType = new _graphql.GraphQLObjectType({
   name: 'Match',
   fields: {
     id: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLID) },
-    name: { type: _graphql.GraphQLString },
+    title: { type: _graphql.GraphQLString },
     type: { type: _graphql.GraphQLString },
     tournament: { type: _graphql.GraphQLString },
-    team: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
     player: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-    index: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
+    info: { type: ScaleType },
     turn: { type: new _graphql.GraphQLList(TurnType) },
     scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
-    createdAt: { type: MillisecondsType }
+    state: { type: _graphql.GraphQLInt },
+    time: { type: MillisecondsType }
   }
 });
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.doc = exports.img = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.member = exports.docId = exports.imgId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.memberId = exports.docs = exports.imgs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.members = exports.emprires = exports.signin = undefined;
+exports.doc = exports.img = exports.image = exports.msg = exports.inbox = exports.vote = exports.rank = exports.match = exports.title = exports.tournament = exports.clan = exports.player = exports.member = exports.docId = exports.imgId = exports.imageId = exports.msgId = exports.inboxId = exports.voteId = exports.rankId = exports.matchId = exports.titleId = exports.tournamentId = exports.clanId = exports.playerId = exports.memberId = exports.docs = exports.imgs = exports.images = exports.msgs = exports.inboxs = exports.votes = exports.ranks = exports.matchs = exports.titles = exports.tournaments = exports.clans = exports.players = exports.members = exports.emprires = exports.signin = undefined;
 
 var _graphql = require('graphql');
 
@@ -139,6 +139,7 @@ var emprires = exports.emprires = {
   }
 };
 var members = exports.members = makeQuery(GraphQLType.MemberType, Model.Member, true);
+var players = exports.players = makeQuery(GraphQLType.PlayerType, Model.Player, true);
 var clans = exports.clans = makeQuery(GraphQLType.ClanType, Model.Clan, true);
 var tournaments = exports.tournaments = makeQuery(GraphQLType.TournamentType, Model.Tournament, true);
 var titles = exports.titles = makeQuery(GraphQLType.TitleType, Model.Title, true);
@@ -152,6 +153,7 @@ var imgs = exports.imgs = makeQuery(GraphQLType.ImgType, Model.Img, true);
 var docs = exports.docs = makeQuery(GraphQLType.DocType, Model.Doc, true);
 
 var memberId = exports.memberId = makeQuery(GraphQLType.MemberType, Model.Member, false, true);
+var playerId = exports.playerId = makeQuery(GraphQLType.PlayerType, Model.Player, false, true);
 var clanId = exports.clanId = makeQuery(GraphQLType.ClanType, Model.Clan, false, true);
 var tournamentId = exports.tournamentId = makeQuery(GraphQLType.TournamentType, Model.Tournament, false, true);
 var titleId = exports.titleId = makeQuery(GraphQLType.TitleType, Model.Title, false, true);
@@ -165,6 +167,7 @@ var imgId = exports.imgId = makeQuery(GraphQLType.ImgType, Model.Img, false, tru
 var docId = exports.docId = makeQuery(GraphQLType.DocType, Model.Doc, false, true);
 
 var member = exports.member = makeQuery(GraphQLType.MemberType, Model.Member, false);
+var player = exports.player = makeQuery(GraphQLType.PlayerType, Model.Player, false);
 var clan = exports.clan = makeQuery(GraphQLType.ClanType, Model.Clan, false);
 var tournament = exports.tournament = makeQuery(GraphQLType.TournamentType, Model.Tournament, false);
 var title = exports.title = makeQuery(GraphQLType.TitleType, Model.Title, false);
