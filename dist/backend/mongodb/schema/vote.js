@@ -66,7 +66,7 @@ var PlayerSchema = new _mongoose2.default.Schema({
   point: [[{ type: Number }]], //[[chem,chuluc,kinang,chienthuat,conghien],[...]]
   rating: [{ type: Number }], //
   game: [[{ type: Number }]], // [[thang/tongso],[thang gan nhat++]]
-  clan: [{ type: _mongoose2.default.Schema.ObjectId, ref: "Clan" }],
+  clan: { type: _mongoose2.default.Schema.ObjectId, ref: "Clan" },
   title: [{ type: _mongoose2.default.Schema.Types.Mixed }]
 });
 // Match Model Data 

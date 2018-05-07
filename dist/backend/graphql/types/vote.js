@@ -218,7 +218,7 @@ var PlayerType = exports.PlayerType = new _graphql.GraphQLObjectType({
     point: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) }, //[[chem,chuluc,kinang,chienthuat,conghien],[...]]
     rating: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) }, //
     game: { type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)) }, // [[thang/tongso],[thang gan nhat++]]
-    clan: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+    clan: { type: _graphql.GraphQLString },
     title: { type: new _graphql.GraphQLList(ScaleType) }
   }
 });
