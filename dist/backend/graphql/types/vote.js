@@ -103,6 +103,7 @@ var MemberType = exports.MemberType = new _graphql.GraphQLObjectType({
     birthDay: { type: _graphql.GraphQLString },
     address: { type: _graphql.GraphQLString },
     introduce: { type: _graphql.GraphQLString },
+    gender: { type: _graphql.GraphQLInt },
     nickName: { type: _graphql.GraphQLString },
     avatar: { type: _graphql.GraphQLString },
     banner: { type: _graphql.GraphQLString },
@@ -238,8 +239,6 @@ var TurnType = new _graphql.GraphQLObjectType({
   fields: {
     game: { type: new _graphql.GraphQLList(GameType) },
     player: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-    bo: { type: _graphql.GraphQLInt },
-    pt: { type: _graphql.GraphQLInt },
     dgta: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
     pr: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
     scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) }
@@ -256,6 +255,8 @@ var MatchType = exports.MatchType = new _graphql.GraphQLObjectType({
     player: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
     info: { type: ScaleType },
     turn: { type: new _graphql.GraphQLList(TurnType) },
+    bo: { type: _graphql.GraphQLInt },
+    pt: { type: _graphql.GraphQLInt },
     scored: { type: new _graphql.GraphQLList(_graphql.GraphQLInt) },
     state: { type: _graphql.GraphQLInt },
     time: { type: MillisecondsType }

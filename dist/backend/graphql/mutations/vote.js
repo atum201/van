@@ -55,6 +55,7 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
         });
       }
       if (action === _constant.UPDATE) {
+        // console.log(col)
         return col.findOneAsync({ _id: (0, _mongodb.ObjectID)(payload.id) }).then(function (doc) {
           if (doc) {
             _lodash2.default.assign(doc, payload); // update Document
@@ -63,7 +64,7 @@ var makeSubmit = function makeSubmit(graphQLType, col) {
             return { id: _constant.STATE_NOT_FOUND };
           }
         }).error(function (e) {
-          return {
+          console.log(e);return {
             id: _constant.STATE_ERROR
           };
         });

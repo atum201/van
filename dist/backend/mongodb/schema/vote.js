@@ -35,6 +35,7 @@ var MemberSchema = new _mongoose2.default.Schema({
   birthDay: { type: Number },
   address: { type: String },
   introduce: { type: String },
+  gender: { type: Number }, // 0:female, 1: male, 2: none
 
   nickName: { type: String },
   avatar: { type: String },
@@ -81,8 +82,6 @@ var TurnSchema = new _mongoose2.default.Schema({
   game: [GameSchema],
   //thong tin turn
   player: [{ type: String }], // player tham gia
-  bo: { type: Number },
-  pt: { type: Number }, // he so gia tri cua turn 
   dgta: [{ type: Number }], //ty le dong gop: tong game point
   pr: [{ type: Number }], // dgta,pt=> diem +/- cua turn
   score: [{ type: Number }]
@@ -95,6 +94,8 @@ var MatchSchema = new _mongoose2.default.Schema({
   info: { type: _mongoose2.default.Schema.Types.Mixed },
   turn: [TurnSchema],
   scored: [{ type: Number }],
+  bo: { type: Number },
+  pt: { type: Number }, // he so gia tri cua turn 
   state: { type: Number }, //0: live, 1 KT
   extend: { type: _mongoose2.default.Schema.Types.Mixed },
   time: { type: Number, default: new Date().getTime() }
